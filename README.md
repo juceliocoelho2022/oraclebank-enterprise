@@ -4,10 +4,17 @@ Backend bancário desenvolvido para demonstrar, na prática, a integração entr
 
 > 🚧 Projeto em desenvolvimento ativo.
 
+## 🖥️ Conceito da interface
+
+A imagem abaixo representa a direção visual planejada para a página inicial pública do OracleBank Enterprise, com experiência bancária premium, atendimento personalizado, produtos financeiros, segurança e acesso aos canais digitais.
+
+![OracleBank Enterprise - Homepage](docs/oraclebank-homepage.png)
+
+> **Nota:** este é um conceito visual da interface planejada. O frontend será implementado e integrado progressivamente à API Java/Spring Boot.
+
 ## 🚀 Stacks utilizadas no projeto
 
 ### ☕ Backend Java
-
 - **Java 24** — linguagem principal do backend
 - **Spring Boot 4.1** — framework base da aplicação
 - **Spring Web** — construção da API REST
@@ -21,16 +28,11 @@ Backend bancário desenvolvido para demonstrar, na prática, a integração entr
 - **Maven 3.9.x** — build e gerenciamento de dependências
 
 ### 🗄️ Oracle Database
-
 - **Oracle AI Database 26ai Free**
 - **Oracle JDBC / OJDBC11**
-- **SQL**
-- **PL/SQL**
-- **Packages**
-- **Stored Procedures**
-- **Functions**
-- **Sequences**
-- **Triggers**
+- **SQL e PL/SQL**
+- **Packages, Stored Procedures e Functions**
+- **Sequences e Triggers**
 - **Views**
 - **Primary Keys / Foreign Keys**
 - **Unique Constraints / Check Constraints**
@@ -39,33 +41,25 @@ Backend bancário desenvolvido para demonstrar, na prática, a integração entr
 - **Database Auditing**
 
 ### 📊 Performance Oracle
-
 - **Oracle Cost-Based Optimizer (CBO)**
 - **EXPLAIN PLAN**
-- **DBMS_XPLAN.DISPLAY**
-- **DBMS_XPLAN.DISPLAY_CURSOR**
+- **DBMS_XPLAN.DISPLAY / DISPLAY_CURSOR**
 - **DBMS_STATS**
-- **Indexes simples**
-- **Composite Indexes**
-- **Covering Indexes**
-- **INDEX RANGE SCAN**
-- **TABLE ACCESS FULL**
+- **Indexes simples, compostos e covering indexes**
+- **INDEX RANGE SCAN / TABLE ACCESS FULL**
 - análise de **E-Rows / A-Rows / Buffers / Cost**
-- análise de seletividade, cardinalidade e clustering factor
+- seletividade, cardinalidade e clustering factor
 
 ### 🐳 Infraestrutura e desenvolvimento
-
 - **Docker**
 - **Docker Compose**
 - **Oracle Database em container**
-- **Git**
-- **GitHub**
+- **Git / GitHub**
 - **IntelliJ IDEA**
 - **PowerShell**
 - **SQL*Plus**
 
-### 🔌 Arquitetura e padrões utilizados
-
+### 🔌 Arquitetura e padrões
 - **REST API**
 - **Layered Architecture**
 - **Controller / Service / Repository**
@@ -132,6 +126,7 @@ oraclebank-enterprise/
 ├── docker/
 │   └── compose.yaml
 ├── docs/
+│   └── oraclebank-homepage.png
 └── README.md
 ```
 
@@ -145,7 +140,7 @@ CLIENTES
         └── PIX_KEYS
 ```
 
-Alterações de saldo também alimentam a estrutura de auditoria:
+Alterações de saldo alimentam automaticamente a auditoria:
 
 ```text
 CONTAS
@@ -159,21 +154,13 @@ AUDITORIA_CONTAS
 
 ## 👤 API de Clientes
 
-Endpoint base:
-
-```http
-/api/v1/clientes
-```
-
-Operações implementadas:
-
 ```text
 GET  /api/v1/clientes
 GET  /api/v1/clientes/{id}
 POST /api/v1/clientes
 ```
 
-Exemplo de criação:
+Exemplo:
 
 ```json
 {
@@ -184,32 +171,17 @@ Exemplo de criação:
 }
 ```
 
-A API possui validações de entrada e tratamento centralizado de erros HTTP.
+A API possui Bean Validation e tratamento centralizado de erros HTTP.
 
 ## 🛡️ Integridade dos dados
 
-O Oracle atua como camada final de garantia da consistência dos dados. Entre as regras implementadas estão:
-
-- CPF único
-- e-mail único
-- chave PIX única
-- relacionamentos por foreign keys
-- validação de status
-- validação do tipo de conta
-- valor de transação maior que zero
-- limite da conta não negativo
-
-As validações Java melhoram a experiência da API, enquanto as **constraints do Oracle** permanecem como garantia final de integridade.
+Entre as regras implementadas estão CPF e e-mail únicos, chave PIX única, foreign keys, validação de status, tipo de conta, valores positivos e limites não negativos. As validações Java melhoram a experiência da API, enquanto as **constraints do Oracle** permanecem como garantia final de integridade.
 
 ## 💰 Transferências bancárias
-
-Endpoint:
 
 ```http
 POST /api/v1/transferencias
 ```
-
-Exemplo:
 
 ```json
 {
@@ -245,61 +217,26 @@ Oracle Database
 
 ## ⚙️ PL/SQL
 
-O package `PKG_TRANSFERENCIAS` concentra operações bancárias importantes, incluindo:
+O package `PKG_TRANSFERENCIAS` concentra operações bancárias importantes:
 
 ```text
 REALIZAR_TRANSFERENCIA
 CONSULTAR_SALDO
 ```
 
-A transferência valida, entre outros pontos:
-
-- valor maior que zero
-- origem diferente do destino
-- existência das contas
-- status das contas
-- saldo disponível
+A transferência valida valor, contas de origem/destino, status e saldo disponível.
 
 ## 🔒 Transações e concorrência
 
-Durante uma transferência, o projeto utiliza:
-
-```sql
-SELECT ... FOR UPDATE
-```
-
-Isso permite bloquear as linhas envolvidas enquanto a operação financeira está em andamento.
-
-```text
-SELECT FOR UPDATE
-       │
-       ▼
-Validar regras
-       │
-       ▼
-Debitar origem
-       │
-       ▼
-Creditar destino
-       │
-       ▼
-Registrar transação
-       │
-       ▼
-COMMIT
-```
-
-Em caso de falha, a operação executa `ROLLBACK`, preservando a atomicidade.
+A transferência utiliza `SELECT ... FOR UPDATE` para bloquear as linhas envolvidas durante a operação. O fluxo atual executa validações, débito, crédito, registro da transação e `COMMIT`; em caso de falha, executa `ROLLBACK`.
 
 ## 🧾 Auditoria automática
 
-O trigger `TRG_AUDITORIA_CONTAS` registra automaticamente mudanças de saldo em `AUDITORIA_CONTAS`, incluindo conta, saldo anterior, saldo novo, operação, usuário do banco e timestamp.
-
-Uma transferência executada pela API Java confirmou o fluxo completo entre REST, PL/SQL, atualização das contas e auditoria automática.
+O trigger `TRG_AUDITORIA_CONTAS` registra mudanças de saldo em `AUDITORIA_CONTAS`, incluindo conta, saldo anterior, saldo novo, operação, usuário do banco e timestamp.
 
 ## 🔢 Sequences e Views
 
-Sequences utilizadas incluem:
+Sequences:
 
 ```text
 SEQ_CLIENTES
@@ -309,7 +246,7 @@ SEQ_PIX_KEYS
 SEQ_AUDITORIA_CONTAS
 ```
 
-Views implementadas:
+Views:
 
 ```text
 VW_CONTAS_CLIENTES
@@ -318,17 +255,7 @@ VW_TRANSFERENCIAS
 
 ## 📊 SQL Analítico
 
-O projeto explora:
-
-```sql
-GROUP BY
-CTE
-ROW_NUMBER()
-RANK()
-LAG()
-SUM() OVER()
-PARTITION BY
-```
+O projeto explora `GROUP BY`, CTE, `ROW_NUMBER()`, `RANK()`, `LAG()`, `SUM() OVER()` e `PARTITION BY`.
 
 ## 🚀 Performance e otimização
 
@@ -375,23 +302,14 @@ FREEPDB1
 
 ## 🔐 Segurança de configuração
 
-Credenciais reais não devem ser versionadas. A configuração do backend pode utilizar variáveis de ambiente:
-
-```yaml
-spring:
-  datasource:
-    url: ${DB_URL:jdbc:oracle:thin:@//localhost:1521/FREEPDB1}
-    username: ${DB_USERNAME:oraclebank}
-    password: ${DB_PASSWORD}
-```
+Credenciais reais não devem ser versionadas. A aplicação utiliza configuração preparada para variáveis de ambiente.
 
 ## 🧪 Cenários validados
 
 - Spring Boot → Oracle Database
 - POST cliente → `201 Created`
 - GET clientes → `200 OK`
-- CPF duplicado → `409 Conflict`
-- e-mail duplicado → `409 Conflict`
+- CPF/e-mail duplicados → `409 Conflict`
 - dados inválidos → `400 Bad Request`
 - cliente inexistente → `404 Not Found`
 - Java → JDBC → PL/SQL
@@ -409,6 +327,7 @@ spring:
 - [ ] Mapear erros `ORA-20xxx` para respostas REST de domínio
 - [ ] Retornar ID da transação na API
 - [ ] API de contas
+- [ ] Implementar frontend baseado no conceito visual
 - [ ] JUnit e Mockito
 - [ ] Testes de integração
 - [ ] JaCoCo
