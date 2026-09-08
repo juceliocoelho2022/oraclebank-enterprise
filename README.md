@@ -4,37 +4,81 @@ Backend bancário desenvolvido para demonstrar, na prática, a integração entr
 
 > 🚧 Projeto em desenvolvimento ativo.
 
+## 🚀 Stacks utilizadas no projeto
+
+### ☕ Backend Java
+
+- **Java 24** — linguagem principal do backend
+- **Spring Boot 4.1** — framework base da aplicação
+- **Spring Web** — construção da API REST
+- **Spring Data JPA** — persistência e CRUD
+- **Hibernate ORM** — mapeamento objeto-relacional
+- **Spring JDBC / JdbcTemplate** — integração direta com PL/SQL
+- **CallableStatement** — execução das procedures Oracle
+- **Jakarta Bean Validation** — validação dos DTOs da API
+- **Spring Boot Actuator** — health checks da aplicação e banco
+- **HikariCP** — pool de conexões JDBC
+- **Maven 3.9.x** — build e gerenciamento de dependências
+
+### 🗄️ Oracle Database
+
+- **Oracle AI Database 26ai Free**
+- **Oracle JDBC / OJDBC11**
+- **SQL**
+- **PL/SQL**
+- **Packages**
+- **Stored Procedures**
+- **Functions**
+- **Sequences**
+- **Triggers**
+- **Views**
+- **Primary Keys / Foreign Keys**
+- **Unique Constraints / Check Constraints**
+- **Transactions — COMMIT / ROLLBACK**
+- **SELECT FOR UPDATE**
+- **Database Auditing**
+
+### 📊 Performance Oracle
+
+- **Oracle Cost-Based Optimizer (CBO)**
+- **EXPLAIN PLAN**
+- **DBMS_XPLAN.DISPLAY**
+- **DBMS_XPLAN.DISPLAY_CURSOR**
+- **DBMS_STATS**
+- **Indexes simples**
+- **Composite Indexes**
+- **Covering Indexes**
+- **INDEX RANGE SCAN**
+- **TABLE ACCESS FULL**
+- análise de **E-Rows / A-Rows / Buffers / Cost**
+- análise de seletividade, cardinalidade e clustering factor
+
+### 🐳 Infraestrutura e desenvolvimento
+
+- **Docker**
+- **Docker Compose**
+- **Oracle Database em container**
+- **Git**
+- **GitHub**
+- **IntelliJ IDEA**
+- **PowerShell**
+- **SQL*Plus**
+
+### 🔌 Arquitetura e padrões utilizados
+
+- **REST API**
+- **Layered Architecture**
+- **Controller / Service / Repository**
+- **DTO Pattern**
+- **Centralized Exception Handling**
+- **Database Constraints como última camada de integridade**
+- **Pessimistic row locking via SELECT FOR UPDATE**
+- **Database-driven auditing**
+- **PL/SQL para regras transacionais críticas**
+
 ## 🎯 Objetivo
 
 O **OracleBank Enterprise** é um projeto de estudo e portfólio com foco em **Java Backend + Oracle Database**. A proposta é ir além de um CRUD tradicional, implementando operações transacionais, regras de negócio no banco e integração entre uma API REST e PL/SQL.
-
-## 🛠️ Stack
-
-### Backend
-- Java 24
-- Spring Boot 4.1
-- Spring Web
-- Spring Data JPA
-- Spring JDBC
-- Bean Validation
-- Spring Boot Actuator
-- Maven
-- HikariCP
-
-### Database
-- Oracle AI Database 26ai Free
-- Oracle JDBC
-- SQL e PL/SQL
-- Packages, Procedures e Functions
-- Sequences e Triggers
-- Views e Constraints
-- Indexes
-- Cost-Based Optimizer (CBO)
-
-### Infraestrutura
-- Docker
-- Docker Compose
-- Git / GitHub
 
 ## 🏗️ Arquitetura
 
@@ -249,20 +293,13 @@ Em caso de falha, a operação executa `ROLLBACK`, preservando a atomicidade.
 
 ## 🧾 Auditoria automática
 
-O trigger `TRG_AUDITORIA_CONTAS` registra automaticamente mudanças de saldo em `AUDITORIA_CONTAS`, incluindo:
-
-- conta
-- saldo anterior
-- saldo novo
-- operação
-- usuário do banco
-- timestamp
+O trigger `TRG_AUDITORIA_CONTAS` registra automaticamente mudanças de saldo em `AUDITORIA_CONTAS`, incluindo conta, saldo anterior, saldo novo, operação, usuário do banco e timestamp.
 
 Uma transferência executada pela API Java confirmou o fluxo completo entre REST, PL/SQL, atualização das contas e auditoria automática.
 
-## 🔢 Sequences
+## 🔢 Sequences e Views
 
-O projeto utiliza sequences dedicadas, incluindo:
+Sequences utilizadas incluem:
 
 ```text
 SEQ_CLIENTES
@@ -271,10 +308,6 @@ SEQ_TRANSACOES
 SEQ_PIX_KEYS
 SEQ_AUDITORIA_CONTAS
 ```
-
-Os laboratórios também exploram o comportamento de `CACHE` em sequences Oracle.
-
-## 👁️ Views
 
 Views implementadas:
 
@@ -285,7 +318,7 @@ VW_TRANSFERENCIAS
 
 ## 📊 SQL Analítico
 
-O projeto explora recursos como:
+O projeto explora:
 
 ```sql
 GROUP BY
@@ -299,29 +332,9 @@ PARTITION BY
 
 ## 🚀 Performance e otimização
 
-Foi criado um laboratório de performance com dezenas de milhares de transações para estudar:
+Foi criado um laboratório com dezenas de milhares de transações para estudar índices, seletividade, cardinalidade, clustering factor, estatísticas, Oracle CBO e execution plans.
 
-- índices simples e compostos
-- covering indexes
-- seletividade
-- cardinalidade
-- clustering factor
-- estatísticas
-- Cost-Based Optimizer
-- execution plans
-
-Recursos utilizados:
-
-```sql
-EXPLAIN PLAN
-DBMS_XPLAN.DISPLAY
-DBMS_XPLAN.DISPLAY_CURSOR
-DBMS_STATS
-```
-
-Métricas analisadas incluem `E-Rows`, `A-Rows`, `Buffers` e `Cost`.
-
-Índices utilizados nos laboratórios incluem:
+Índices utilizados incluem:
 
 ```text
 IDX_TRANSACOES_STATUS
@@ -329,17 +342,13 @@ IDX_TRANSACOES_ORIGEM_STATUS_DATA
 IDX_TRANSACOES_COVER
 ```
 
-Os testes permitem comparar estratégias como `TABLE ACCESS FULL` e `INDEX RANGE SCAN`.
-
 ## ❤️ Health Check
-
-A aplicação utiliza Spring Boot Actuator:
 
 ```http
 GET /actuator/health
 ```
 
-O health check confirma o fluxo:
+Fluxo validado:
 
 ```text
 Spring Boot → HikariCP → Oracle JDBC → Oracle Database
@@ -350,8 +359,6 @@ Spring Boot → HikariCP → Oracle JDBC → Oracle Database
 ```bash
 docker compose -f docker/compose.yaml up -d
 ```
-
-Arquitetura local:
 
 ```text
 Spring Boot :8080
@@ -415,7 +422,7 @@ spring:
 
 ## 🧠 Competências demonstradas
 
-`Java` • `Spring Boot` • `REST APIs` • `Spring Data JPA` • `Spring JDBC` • `Oracle Database` • `SQL` • `PL/SQL` • `Stored Procedures` • `Packages` • `Sequences` • `Triggers` • `Views` • `Constraints` • `Transactions` • `COMMIT / ROLLBACK` • `SELECT FOR UPDATE` • `Database Auditing` • `Indexes` • `Execution Plans` • `Oracle CBO` • `Query Optimization` • `Docker`
+`Java 24` • `Spring Boot 4.1` • `REST APIs` • `Spring Data JPA` • `Hibernate` • `Spring JDBC` • `JdbcTemplate` • `CallableStatement` • `Bean Validation` • `Actuator` • `HikariCP` • `Maven` • `Oracle Database 26ai` • `Oracle JDBC` • `SQL` • `PL/SQL` • `Stored Procedures` • `Packages` • `Functions` • `Sequences` • `Triggers` • `Views` • `Constraints` • `Transactions` • `COMMIT / ROLLBACK` • `SELECT FOR UPDATE` • `Database Auditing` • `Indexes` • `Execution Plans` • `Oracle CBO` • `Query Optimization` • `Docker` • `Docker Compose` • `Git` • `GitHub`
 
 ## 👨‍💻 Autor
 
