@@ -4,6 +4,24 @@ Backend bancário desenvolvido para demonstrar, na prática, a integração entr
 
 > 🚧 Projeto em desenvolvimento ativo.
 
+## Technical Snapshot
+
+| Focus | Evidence in this project |
+|---|---|
+| Target roles | Java Backend Developer · Backend Engineer · Database Developer |
+| Backend | Java · Spring Boot · REST API · Spring Data JPA · Spring JDBC |
+| Database | Oracle Database · SQL · PL/SQL |
+| Enterprise database features | Packages · Stored Procedures · Triggers · Views · Constraints |
+| Transactions & concurrency | COMMIT/ROLLBACK · SELECT FOR UPDATE · Pessimistic Locking |
+| Performance | Indexes · Execution Plans · Oracle CBO · Query Optimization |
+| Infrastructure | Docker · Docker Compose · Maven |
+
+**Engineering highlights:** integração Java ↔ Oracle, regras transacionais em PL/SQL, auditoria automática, concorrência com locking e laboratório de análise de performance.
+
+**Keywords:** `Java Backend` `Spring Boot` `Oracle Database` `SQL` `PL/SQL` `JDBC` `Transactions` `Stored Procedures` `Query Optimization` `Docker`
+
+---
+
 ## 🚀 Stacks utilizadas no projeto
 
 ### ☕ Backend Java
@@ -431,24 +449,6 @@ spring:
 Desenvolvedor Backend com foco em **Java, Spring Boot, APIs REST, Oracle Database, SQL, PL/SQL, Docker e Cloud**.
 
 GitHub: **@juceliocoelho2022**
-
----
-
-## Technical Snapshot
-
-| Focus | Evidence in this project |
-|---|---|
-| Target roles | Java Backend Developer · Backend Engineer · Database Developer |
-| Backend | Java · Spring Boot · REST API · Spring Data JPA · Spring JDBC |
-| Database | Oracle Database · SQL · PL/SQL |
-| Enterprise database features | Packages · Stored Procedures · Triggers · Views · Constraints |
-| Transactions & concurrency | COMMIT/ROLLBACK · SELECT FOR UPDATE · Pessimistic Locking |
-| Performance | Indexes · Execution Plans · Oracle CBO · Query Optimization |
-| Infrastructure | Docker · Docker Compose · Maven |
-
-**Engineering highlights:** integração Java ↔ Oracle, regras transacionais em PL/SQL, auditoria automática, concorrência com locking e laboratório de análise de performance.
-
-**Keywords:** `Java Backend` `Spring Boot` `Oracle Database` `SQL` `PL/SQL` `JDBC` `Transactions` `Stored Procedures` `Query Optimization` `Docker`
 
 ---
 
